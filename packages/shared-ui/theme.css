@@ -1,0 +1,83 @@
+@theme {
+  --color-brand-primary: #004990;
+  --color-brand-lighter: #336da6;
+  --color-brand-darker: #003365;
+  --color-brand-subtle: #b3c8de;
+
+  --color-error-primary: #ed2f48;
+  --color-error-lighter: #f1596d;
+  --color-error-darker: #be263a;
+  --color-error-subtle: #facdd3;
+
+  --color-warning-primary: #f49313;
+  --color-warning-lighter: #f6a942;
+  --color-warning-darker: #dc8411;
+  --color-warning-subtle: #fbd4a1;
+
+  --color-success-primary: #16aa5e;
+  --color-success-lighter: #45bb7e;
+  --color-success-darker: #12884b;
+  --color-success-subtle: #a2ddbf;
+
+  --color-info-primary: #1393d8;
+  --color-info-lighter: #42a9e0;
+  --color-info-darker: #0f76ad;
+  --color-info-subtle: #a1d4ef;
+
+  --color-dark-1: #3a3a3c;
+  --color-dark-2: #6b7588;
+  --color-dark-3: #8f90a6;
+  --color-dark-4: #c7c9d9;
+
+  --color-light-1: #dde5e9;
+  --color-light-2: #ebebf0;
+  --color-light-3: #f2f2f5;
+  --color-light-4: #fafafc;
+
+  --font-heading: "Inter", sans-serif;
+  --font-label: "Mulish", sans-serif;
+}
+
+@utility heading-1 {
+  @apply text-dark-1 font-heading text-5xl md:text-6xl font-bold tracking-tight;
+}
+
+@utility heading-2 {
+  @apply text-dark-1 font-heading text-3xl md:text-4xl font-bold tracking-tight;
+}
+
+@utility heading-3 {
+  @apply text-dark-1 font-heading text-3xl font-bold;
+}
+
+@utility heading-4 {
+  @apply text-dark-1 font-heading text-2xl font-bold;
+}
+
+@utility heading-5 {
+  @apply text-dark-1 font-heading text-xl font-bold;
+}
+
+@utility heading-6 {
+  @apply text-dark-1 font-heading text-lg font-bold;
+}
+
+@utility body-normal {
+  @apply font-label text-base font-normal;
+}
+
+@utility body-large {
+  @apply font-label text-xl font-normal;
+}
+
+@utility label-small {
+  @apply font-label text-xs font-normal;
+}
+
+@utility label-normal {
+  @apply font-label text-sm md:text-base font-semibold;
+}
+
+@utility label-large {
+  @apply font-label text-base font-semibold;
+}
