@@ -1,2 +1,5 @@
 @import "tailwindcss";
+
+@import "../../../packages/shared-ui/theme.css";
+
 @source "../../../packages/shared-ui";
