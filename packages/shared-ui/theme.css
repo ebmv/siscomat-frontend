@@ -67,7 +67,7 @@
 }
 
 @utility body-large {
-  @apply font-label text-xl font-normal;
+  @apply font-label text-xl font-semibold;
 }
 
 @utility label-small {
@@ -75,7 +75,7 @@
 }
 
 @utility label-normal {
-  @apply font-label text-sm md:text-base font-semibold;
+  @apply font-label text-sm md:text-base font-normal;
 }
 
 @utility label-large {
