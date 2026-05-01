@@ -1,3 +1,39 @@
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  src: url("./fonts/Inter-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 600;
+  src: url("./fonts/Inter-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 700;
+  src: url("./fonts/Inter-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Mulish";
+  font-weight: 400;
+  src: url("./fonts/Mulish-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Mulish";
+  font-weight: 600;
+  src: url("./fonts/Mulish-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Mulish";
+  font-weight: 700;
+  src: url("./fonts/Mulish-Bold.woff2") format("woff2");
+}
+
 @theme {
   --color-brand-primary: #004990;
   --color-brand-lighter: #336da6;
@@ -75,11 +111,11 @@
 }
 
 @utility label-small {
-  @apply font-label text-xs font-normal;
+  @apply font-label text-xs font-semibold;
 }
 
 @utility label-normal {
-  @apply font-label text-sm md:text-base font-normal;
+  @apply font-label text-sm md:text-base font-semibold;
 }
 
 @utility label-large {
