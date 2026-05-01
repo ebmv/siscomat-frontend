@@ -7,7 +7,7 @@
   transform: translate(-50%, 50%);
 }
 
-.circle-1 { width: 60vw; height: 60vw; opacity: 1;   }
-.circle-2 { width: 80vw; height: 80vw; opacity: 0.8; }
-.circle-3 { width: 100vw; height: 100vw; opacity: 0.6; }
-.circle-4 { width: 120vw; height: 120vw; opacity: 0.4; }
+.circle-1 { width: 60vmax; height: 60vmax; opacity: 1;   }
+.circle-2 { width: 80vmax; height: 80vmax; opacity: 0.8; }
+.circle-3 { width: 100vmax; height: 100vmax; opacity: 0.6; }
+.circle-4 { width: 120vmax; height: 120vmax; opacity: 0.4; }
