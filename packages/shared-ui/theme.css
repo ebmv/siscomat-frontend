@@ -36,10 +36,14 @@
 
   --font-heading: "Inter", sans-serif;
   --font-label: "Mulish", sans-serif;
+
+  --shadow-card: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  --shadow-small: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+  --shadow-inset-top: inset 0px 4px 4px -4px rgba(0, 0, 0, 0.25);
 }
 
 @utility heading-1 {
-  @apply text-dark-1 font-heading text-5xl md:text-6xl font-bold tracking-tight;
+  @apply text-dark-1 font-heading text-5xl font-bold tracking-tight;
 }
 
 @utility heading-2 {
