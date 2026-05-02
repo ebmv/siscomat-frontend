@@ -1,0 +1,13 @@
+.circle {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 50%;
+  background: var(--color-brand-darker);
+  transform: translate(-50%, 50%);
+}
+
+.circle-1 { width: 60vmax; height: 60vmax; opacity: 1;   }
+.circle-2 { width: 80vmax; height: 80vmax; opacity: 0.8; }
+.circle-3 { width: 100vmax; height: 100vmax; opacity: 0.6; }
+.circle-4 { width: 120vmax; height: 120vmax; opacity: 0.4; }
