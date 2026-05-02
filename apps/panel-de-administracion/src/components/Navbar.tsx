@@ -3,9 +3,20 @@ import logo from "../assets/logo.png";
 import { Button } from "@siscomat/shared-ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./auth";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
+
+  if (!user) return null;
 
   return (
     <nav className="bg-brand-primary fixed w-full z-20 top-0 inset-s-0">
@@ -18,13 +29,18 @@ export const Navbar = () => {
             </span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <Button>Plantillas</Button>
-            <Button>Plantillas</Button>
+            <Button onClick={() => navigate("/plantillas")}>Plantillas</Button>
+            <Button onClick={() => navigate("/constancias")}>
+              Constancias
+            </Button>
+            {user.esAdmin && (
+              <Button onClick={() => navigate("/gestores")}>Gestores</Button>
+            )}
           </div>
         </div>
 
         <div className="hidden md:block">
-          <Button>
+          <Button onClick={handleLogout}>
             Cerrar sesión
             <FontAwesomeIcon icon={faSignOutAlt} />
           </Button>
@@ -57,9 +73,14 @@ export const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-brand-primary border-t border-brand-darker w-full">
           <div className="flex flex-col p-4 gap-4">
-            <Button>Plantillas</Button>
-            <Button>Constancias</Button>
-            <Button>Cerrar sesión</Button>
+            <Button onClick={() => navigate("/plantillas")}>Plantillas</Button>
+            <Button onClick={() => navigate("/constancias")}>
+              Constancias
+            </Button>
+            {user.esAdmin && (
+              <Button onClick={() => navigate("/gestores")}>Gestores</Button>
+            )}
+            <Button onClick={handleLogout}>Cerrar sesión</Button>
           </div>
         </div>
       )}
