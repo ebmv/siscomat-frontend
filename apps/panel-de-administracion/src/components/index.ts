@@ -8,3 +8,4 @@ export * from "./Navbar";
 export * from "./Select";
 export * from "./Table";
 export * from "./FileUploader";
+export * from "./auth";
