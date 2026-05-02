@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 import { Button } from "@siscomat/shared-ui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 
 export const Navbar = () => {
@@ -19,15 +19,18 @@ export const Navbar = () => {
   if (!user) return null;
 
   return (
-    <nav className="bg-brand-primary fixed w-full z-20 top-0 inset-s-0">
+    <nav className="bg-brand-primary w-full z-20 inset-s-0">
       <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-3">
         <div className="flex items-center gap-8">
-          <div className="flex items-center gap-3">
+          <Link
+            to="/"
+            className="flex items-center gap-3 no-underline text-inherit cursor-pointer"
+          >
             <img src={logo} className="h-16" alt="Logo Unison" />
             <span className="self-center heading-1 text-light-4 whitespace-nowrap">
               SISCOMAT
             </span>
-          </div>
+          </Link>
           <div className="hidden md:flex items-center gap-4">
             <Button onClick={() => navigate("/plantillas")}>Plantillas</Button>
             <Button onClick={() => navigate("/constancias")}>
