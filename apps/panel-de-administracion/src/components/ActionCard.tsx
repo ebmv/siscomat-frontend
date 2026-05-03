@@ -12,17 +12,16 @@ export const ActionCard = ({ title, icon, onClick }: ActionCardProps) => {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer transition-transform hover:scale-105 w-80 aspect-square
-      "
+      className="cursor-pointer transition-transform hover:scale-105 w-full sm:w-72 md:w-80 aspect-auto sm:aspect-square"
     >
       <Card
         variant="white"
-        className="items-center justify-center gap-4 w-full! h-full! p-4"
+        className="items-center justify-center gap-3 w-full! h-full! py-6 px-6 sm:p-4"
       >
-        <div className="text-5xl text-brand-primary">
+        <div className="text-4xl sm:text-5xl text-brand-primary">
           <FontAwesomeIcon icon={icon} />
         </div>
-        <h2 className="heading-2 text-center">{title}</h2>
+        <h2 className="heading-3 sm:heading-2 text-center">{title}</h2>
       </Card>
     </div>
   );

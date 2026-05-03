@@ -6,11 +6,17 @@ interface ListContainerProps {
   isEmpty?: boolean;
 }
 
-export const ListContainer = ({ children, emptyMessage = "No hay elementos.", isEmpty = false }: ListContainerProps) => {
+export const ListContainer = ({
+  children,
+  emptyMessage = "No hay elementos.",
+  isEmpty = false,
+}: ListContainerProps) => {
   return (
-    <div className="w-full bg-light-3 rounded-md shadow-inset-top overflow-y-auto p-1 flex flex-col gap-2">
+    <div className="w-full bg-light-3 rounded-md shadow-inset-top p-1 flex flex-col gap-2">
       {isEmpty ? (
-        <p className="label-small text-dark-3 text-center py-2">{emptyMessage}</p>
+        <p className="label-small text-dark-3 text-center py-2">
+          {emptyMessage}
+        </p>
       ) : (
         children
       )}
