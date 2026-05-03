@@ -190,7 +190,7 @@ export const Plantillas = () => {
             </Card>
           </div>
 
-          <Card className="flex-1 overflow-hidden min-h-96 p-0">
+          <Card className="flex-1 overflow-hidden min-h-96 p-4">
             {previewUrl ? (
               <iframe
                 src={previewUrl + "#toolbar=0"}
