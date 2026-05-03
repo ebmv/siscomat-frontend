@@ -19,7 +19,7 @@ export const Card = ({
   };
   return (
     <div
-      className={`${variants[variant]} rounded-2xl shadow-card w-sm sm:w-2xl md:w-6xl flex flex-col ${className}`}
+      className={`${variants[variant]} rounded-2xl shadow-card w-full flex flex-col ${className}`}
     >
       {children}
     </div>

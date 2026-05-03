@@ -15,12 +15,12 @@ export const Home = () => {
     return "Buenas noches";
   };
   return (
-    <div className="pt-10 px-2 md:px-16 flex flex-col items-center gap-6">
-      <Card className="px-10 pb-16 pt-6">
-        <h1 className="justify-center text-center heading-1 mb-8">
+    <div className="pt-6 sm:pt-10 p-4 md:px-16 flex flex-col items-center gap-6">
+      <Card className="px-16 py-8 sm:px-10 sm:pt-6 lg:min-h-[70vh] w-full max-w-6xl">
+        <h1 className="justify-center text-center heading-2 sm:heading-1 mb-8 sm:mb-12">
           {getGreeting()}, {user?.nombre}
         </h1>
-        <div className="flex flex-row flex-wrap justify-center gap-6">
+        <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-6 w-full">
           <ActionCard
             title="Gestionar plantillas"
             icon={faPalette}

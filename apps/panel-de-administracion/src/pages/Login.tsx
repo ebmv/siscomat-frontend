@@ -53,10 +53,13 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-light-2 p-8 px-2 md:px-16 flex flex-col items-center gap-6">
-      <Card className="px-4 py-4 gap-8 items-center">
-        <h1 className="heading-1 text-center py-10">Login</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-md">
+    <div className="min-h-screen bg-light-2 p-4 sm:p-8 flex flex-col items-center justify-center">
+      <Card className="px-6 py-10 sm:px-10 sm:py-12 lg:py-16 gap-8 lg:gap-10 items-center w-full max-w-md lg:max-w-none lg:w-[60%] lg:min-h-[80vh]">
+        <h1 className="heading-1 text-center ">Login</h1>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-4 w-full lg:max-w-md"
+        >
           <Input
             label="Correo"
             type="email"
@@ -78,12 +81,12 @@ export const Login = () => {
               {errors.general}
             </div>
           )}
+          <div className="w-full mt-4 lg:mt-8">
+            <Button type="submit" disabled={loading} onClick={handleSubmit}>
+              {loading ? "Iniciando..." : "Iniciar sesión"}
+            </Button>
+          </div>
         </form>
-        <div className="py-10">
-          <Button type="submit" disabled={loading} onClick={handleSubmit}>
-            {loading ? "Iniciando..." : "Iniciar sesión"}
-          </Button>
-        </div>
       </Card>
     </div>
   );
