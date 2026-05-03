@@ -123,73 +123,74 @@ export const Plantillas = () => {
   const hayMenos = visibleCount > PLANTILLAS_POR_PAGINA;
 
   return (
-    // SE FUE EL items-center ALV y metimos contenedor centrado seguro
     <div className="w-full max-w-7xl mx-auto p-4 md:py-10 md:px-8 lg:px-16 flex flex-col gap-6">
-      <Card className="w-full p-6 lg:px-10 lg:py-8">
-        <h1 className="heading-2 text-center mb-8">Gestión de plantillas</h1>
+
+      <Card className="p-6 lg:p-10 gap-6">
+        <h1 className="heading-2 text-center">Gestión de plantillas</h1>
 
         {generalError && (
-          <p className="label-normal text-error-primary text-center mb-4">{generalError}</p>
+          <p className="label-normal text-error-primary text-center">{generalError}</p>
         )}
 
-        {/* w-full para evitar desbordes raros */}
-        <div className="flex flex-col lg:flex-row gap-8 w-full">
-          
-          {/* min-w-0 ayuda a flexbox a no volverse loco con anchos de los hijos */}
-          <div className="flex flex-col gap-4 w-full lg:w-72 shrink-0 min-w-0">
-            <h2 className="heading-5">Cargar plantilla</h2>
-            
-            <div className="flex flex-col gap-1 w-full">
-              <FileUploader
-                key={fileUploaderKey}
-                accept="application/pdf"
-                onFileSelect={setArchivo}
-              />
-              {archivoError && (
-                <p className="text-xs font-label text-error-primary">{archivoError}</p>
-              )}
-            </div>
-            <Button onClick={handleSubir} disabled={loading} className="w-full">
-              {loading ? "Subiendo..." : "Subir plantilla"}
-            </Button>
+        <div className="flex flex-col lg:flex-row gap-6 w-full">
+          <div className="flex flex-col gap-4 w-full lg:w-72 shrink-0">
 
-            <h2 className="heading-5 mt-4">Plantillas</h2>
-            <ListContainer
-              isEmpty={plantillasVisibles.length === 0}
-              emptyMessage="No hay plantillas registradas."
-            >
-              {plantillasVisibles.map((p) => (
-                <div key={p.id} onClick={() => handlePreview(p.id)} className="cursor-pointer">
-                  <ListElement
-                    nombre={p.nombre}
-                    fechaCreacion={formatFecha(p.created_at)}
-                    onDelete={() => handleEliminar(p.id)}
-                  />
-                </div>
-              ))}
-            </ListContainer>
+            <Card className="p-4 gap-3">
+              <h2 className="heading-5">Cargar plantilla</h2>
+              <div className="flex flex-col gap-1 w-full">
+                <FileUploader
+                  key={fileUploaderKey}
+                  accept="application/pdf"
+                  onFileSelect={setArchivo}
+                />
+                {archivoError && (
+                  <p className="text-xs font-label text-error-primary">{archivoError}</p>
+                )}
+              </div>
+              <Button onClick={handleSubir} disabled={loading}>
+                {loading ? "Subiendo..." : "Subir plantilla"}
+              </Button>
+            </Card>
 
-            <div className="w-full flex items-center justify-center gap-4">
-              {hayMenos && (
-                <button
-                  onClick={() => setVisibleCount(PLANTILLAS_POR_PAGINA)}
-                  className="label-small text-dark-3 hover:text-dark-2 transition-colors cursor-pointer"
-                >
-                  Ver menos
-                </button>
-              )}
-              {hayMas && (
-                <button
-                  onClick={() => setVisibleCount((c) => c + PLANTILLAS_POR_PAGINA)}
-                  className="label-small text-brand-primary hover:text-brand-lighter transition-colors cursor-pointer"
-                >
-                  Ver más
-                </button>
-              )}
-            </div>
+            <Card className="p-4 gap-3">
+              <h2 className="heading-5">Plantillas</h2>
+              <ListContainer
+                isEmpty={plantillasVisibles.length === 0}
+                emptyMessage="No hay plantillas registradas."
+              >
+                {plantillasVisibles.map((p) => (
+                  <div key={p.id} onClick={() => handlePreview(p.id)} className="cursor-pointer">
+                    <ListElement
+                      nombre={p.nombre}
+                      fechaCreacion={formatFecha(p.created_at)}
+                      onDelete={() => handleEliminar(p.id)}
+                    />
+                  </div>
+                ))}
+              </ListContainer>
+
+              <div className="w-full flex items-center justify-center gap-4">
+                {hayMenos && (
+                  <button
+                    onClick={() => setVisibleCount(PLANTILLAS_POR_PAGINA)}
+                    className="label-small text-dark-3 hover:text-dark-2 transition-colors cursor-pointer"
+                  >
+                    Ver menos
+                  </button>
+                )}
+                {hayMas && (
+                  <button
+                    onClick={() => setVisibleCount((c) => c + PLANTILLAS_POR_PAGINA)}
+                    className="label-small text-brand-primary hover:text-brand-lighter transition-colors cursor-pointer"
+                  >
+                    Ver más
+                  </button>
+                )}
+              </div>
+            </Card>
           </div>
 
-          <div className="flex-1 bg-light-2 rounded-lg overflow-hidden min-h-96 w-full min-w-0">
+          <Card className="flex-1 overflow-hidden min-h-96 p-0">
             {previewUrl ? (
               <iframe
                 src={previewUrl + "#toolbar=0"}
@@ -203,9 +204,10 @@ export const Plantillas = () => {
                 </p>
               </div>
             )}
-          </div>
+          </Card>
         </div>
       </Card>
+
     </div>
   );
 };
