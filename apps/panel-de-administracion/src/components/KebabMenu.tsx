@@ -31,23 +31,21 @@ export const KebabMenu = ({ onDelete }: KebabMenuProps) => {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-8 h-8 flex items-center justify-center text-dark-1 hover:bg-light-4 hover:text-dark-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-brand-subtle"
+        className="w-8 h-8 flex items-center justify-center text-dark-1 hover:bg-light-4 hover:text-dark-3 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-brand-subtle cursor-pointer"
         aria-label="Abrir opciones"
       >
         <FontAwesomeIcon icon={faEllipsisVertical} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md hover:bg-error-subtle transition-colors shadow-card z-10 overflow-hidden">
-          <div className="py-1">
-            <button
-              onClick={handleDeleteClick}
-              className="w-full flex items-center gap-3 px-4 py-2 label-normal text-error-primary text-left"
-            >
-              <FontAwesomeIcon icon={faTrash} />
-              <span className="label-normal text-dark-1">Eliminar</span>
-            </button>
-          </div>
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-card z-10 overflow-hidden">
+          <button
+            onClick={handleDeleteClick}
+            className="w-full flex items-center gap-3 px-4 py-3 label-normal text-error-primary text-left hover:bg-error-subtle transition-colors cursor-pointer"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            <span className="label-normal text-dark-1">Eliminar</span>
+          </button>
         </div>
       )}
     </div>

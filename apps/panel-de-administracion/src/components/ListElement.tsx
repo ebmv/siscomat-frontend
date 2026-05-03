@@ -3,13 +3,10 @@ import { KebabMenu } from "./KebabMenu";
 interface ListElementProps {
   nombre: string;
   fechaCreacion: string;
+  onDelete: () => void;
 }
 
-export const ListElement = ({ nombre, fechaCreacion }: ListElementProps) => {
-  const handleDeletePlantilla = () => {
-    // TODO: agregar lógica para eliminar plantilla
-  };
-
+export const ListElement = ({ nombre, fechaCreacion, onDelete }: ListElementProps) => {
   return (
     <div className="flex items-center justify-between gap-8 px-4 py-2 bg-white rounded-md shadow-small hover:bg-brand-subtle transition-colors">
       <div className="flex flex-col">
@@ -18,7 +15,7 @@ export const ListElement = ({ nombre, fechaCreacion }: ListElementProps) => {
         </span>
       </div>
       <div>
-        <KebabMenu onDelete={handleDeletePlantilla} />
+        <KebabMenu onDelete={onDelete} />
       </div>
     </div>
   );

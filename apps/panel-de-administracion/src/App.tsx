@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login, Home } from "./pages";
+import { Login, Home, Plantillas } from "./pages";
 import {
   Navbar,
   AuthProvider,
@@ -21,7 +21,8 @@ function App() {
 
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Home />} />
-                // TODO: agregar rutas para plantillas y constancias
+                <Route path="/plantillas" element={<Plantillas />} />
+                // TODO: agregar ruta para constancias
               </Route>
 
               <Route element={<ProtectedRoute requiresAdmin={true} />}>
