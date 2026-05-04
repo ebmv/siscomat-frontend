@@ -5,7 +5,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Box from "../components/Box";
 
 interface Constancia {
-  id: number;
+  id: string;
   curso: string;
 }
 
@@ -23,6 +23,7 @@ export default function ConsultarFlow() {
   const [folio, setFolio] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [descargando, setDescargando] = useState<string | null>(null);
   const [resultado, setResultado] = useState<ResultadoBusqueda | null>(null);
 
   useEffect(() => {
@@ -60,6 +61,32 @@ export default function ConsultarFlow() {
     }
   }
 
+  async function handleDescargar(id: string) {
+    setDescargando(id);
+    setError("");
+
+    try {
+      const res = await fetch(`${API_URL}/api/public/constancia/${id}/pdf`);
+
+      if (!res.ok) {
+        setError("No se pudo descargar la constancia.");
+        return;
+      }
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `constancia_${id}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      setError("No se pudo conectar al servidor.");
+    } finally {
+      setDescargando(null);
+    }
+  }
+
   function handleRegresar() {
     setResultado(null);
     setFolio("");
@@ -84,6 +111,10 @@ export default function ConsultarFlow() {
           {resultado.constancias.length} constancia(s) disponible(s):
         </p>
 
+        {error && (
+          <p className="label-normal text-error-primary mb-4">{error}</p>
+        )}
+
         <div className="flex flex-col divide-y divide-light-1">
           {resultado.constancias.map((c) => (
             <div key={c.id} className="flex items-center justify-between gap-4 py-4">
@@ -91,7 +122,13 @@ export default function ConsultarFlow() {
                 {c.curso}
               </span>
               <div className="w-28 shrink-0">
-                <Button variant="secondary">Descargar</Button>
+                <Button
+                  variant="secondary"
+                  disabled={descargando === c.id}
+                  onClick={() => handleDescargar(c.id)}
+                >
+                  {descargando === c.id ? "..." : "Descargar"}
+                </Button>
               </div>
             </div>
           ))}
