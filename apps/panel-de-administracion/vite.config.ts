@@ -10,7 +10,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@siscomat/shared-ui': path.resolve(__dirname, '../../packages/shared-ui/src/index.ts')
+      '@siscomat/shared-ui': path.resolve(__dirname, '../../packages/shared-ui/src/index.ts'),
+      '/shared-fonts': path.resolve(__dirname, '../../packages/shared-ui/src/fonts')
     }
   }
 })
