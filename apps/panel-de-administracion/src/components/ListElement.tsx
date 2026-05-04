@@ -3,7 +3,7 @@ import { KebabMenu } from "./KebabMenu";
 interface ListElementProps {
   nombre: string;
   fechaCreacion: string;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 export const ListElement = ({ nombre, fechaCreacion, onDelete }: ListElementProps) => {
@@ -15,7 +15,14 @@ export const ListElement = ({ nombre, fechaCreacion, onDelete }: ListElementProp
         </span>
       </div>
       <div>
-        <KebabMenu onDelete={onDelete} />
+        <KebabMenu
+          onDelete={onDelete}
+          deleteDisabledReason={
+            !onDelete 
+              ? "Esta plantilla no puede eliminarse porque ya existen constancias generadas con ella." 
+              : undefined
+          }
+        />
       </div>
     </div>
   );

@@ -3,10 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface KebabMenuProps {
-  onDelete: () => void;
+  onDelete?: () => void;
+  deleteDisabledReason?: string;
 }
 
-export const KebabMenu = ({ onDelete }: KebabMenuProps) => {
+export const KebabMenu = ({ onDelete, deleteDisabledReason }: KebabMenuProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -22,9 +23,13 @@ export const KebabMenu = ({ onDelete }: KebabMenuProps) => {
   }, []);
 
   const handleDeleteClick = () => {
-    onDelete();
-    setIsOpen(false);
+    if (onDelete) {
+      onDelete();
+      setIsOpen(false);
+    }
   };
+
+  const disabled = !onDelete;
 
   return (
     <div className="relative inline-block text-left" ref={menuRef}>
@@ -38,13 +43,23 @@ export const KebabMenu = ({ onDelete }: KebabMenuProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-card z-10 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-card z-50 overflow-hidden">
           <button
             onClick={handleDeleteClick}
-            className="w-full flex items-center gap-3 px-4 py-3 label-normal text-error-primary text-left hover:bg-error-subtle transition-colors cursor-pointer"
+            disabled={disabled}
+            className={`w-full flex flex-col px-4 py-3 text-left transition-colors ${
+              disabled
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-error-subtle cursor-pointer"
+            }`}
           >
-            <FontAwesomeIcon icon={faTrash} />
-            <span className="label-normal text-dark-1">Eliminar</span>
+            <div className="flex items-center gap-3">
+              <FontAwesomeIcon icon={faTrash} className="text-error-primary" />
+              <span className="label-normal text-dark-1">Eliminar</span>
+            </div>
+            {disabled && deleteDisabledReason && (
+              <p className="label-small text-dark-3 mt-1 ml-6">{deleteDisabledReason}</p>
+            )}
           </button>
         </div>
       )}
