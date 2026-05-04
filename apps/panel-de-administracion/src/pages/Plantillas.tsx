@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, Button } from "@siscomat/shared-ui";
-import { FileUploader, ListContainer, ListElement } from "../components";
+import { FileUploader, ListContainer, ListElement, Modal, ModalIcon, ModalTitle, ModalActions } from "../components";
 import { useAuth } from "../components";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
 interface Plantilla {
   id: number;
   nombre: string;
   created_at: string;
+  en_uso: boolean;
 }
 
 const PLANTILLAS_POR_PAGINA = 3;
@@ -19,8 +21,11 @@ export const Plantillas = () => {
   const [archivo, setArchivo] = useState<File | null>(null);
   const [fileUploaderKey, setFileUploaderKey] = useState(0);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null); 
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
+  const [plantillaAEliminar, setPlantillaAEliminar] = useState<Plantilla | null>(null);
+  const [eliminarError, setEliminarError] = useState("");
 
   const fetchPlantillas = useCallback(async () => {
     try {
@@ -85,6 +90,8 @@ export const Plantillas = () => {
   }
 
   async function handlePreview(id: number) {
+    if (id === selectedId) return;
+
     try {
       const res = await api.get(`/plantillas/${id}/archivo`, {
         responseType: "blob",
@@ -92,22 +99,29 @@ export const Plantillas = () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const url = URL.createObjectURL(res.data);
       setPreviewUrl(url);
+      setSelectedId(id);
     } catch {
       setGeneralError("No se pudo cargar el preview.");
     }
   }
 
-  async function handleEliminar(id: number) {
+  async function handleEliminarConfirmado() {
+    if (!plantillaAEliminar) return;
     try {
-      await api.delete(`/plantillas/${id}`);
-      if (previewUrl) {
+      await api.delete(`/plantillas/${plantillaAEliminar.id}`);
+      
+      if (previewUrl && plantillaAEliminar.id === selectedId) {
         URL.revokeObjectURL(previewUrl);
         setPreviewUrl(null);
+        setSelectedId(null);
       }
+      
       setGeneralError("");
+      setPlantillaAEliminar(null);
+      setEliminarError("");
       await fetchPlantillas();
-    } catch {
-      setGeneralError("Error al eliminar la plantilla.");
+    } catch (e: any) {
+      setEliminarError("Error al eliminar la plantilla.");
     }
   }
 
@@ -124,6 +138,32 @@ export const Plantillas = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 md:py-10 md:px-8 lg:px-16 flex flex-col gap-6">
+
+      <Modal
+        isOpen={plantillaAEliminar !== null}
+        onClose={() => { setPlantillaAEliminar(null); setEliminarError(""); }}
+      >
+        <ModalIcon icon={faTriangleExclamation} variant="error" />
+        <ModalTitle title="Eliminar plantilla" />
+        <p className="label-normal text-dark-2 text-center">
+          ¿Está seguro de que desea eliminar la plantilla "{plantillaAEliminar?.nombre}"?
+        </p>
+        {eliminarError && (
+          <p className="label-small text-error-primary text-center mt-2">{eliminarError}</p>
+        )}
+        <ModalActions>
+          <div className="w-40">
+            <Button variant="secondary" onClick={() => { setPlantillaAEliminar(null); setEliminarError(""); }}>
+              Cancelar
+            </Button>
+          </div>
+          <div className="w-40">
+            <Button variant="error" onClick={handleEliminarConfirmado}>
+              Sí, eliminar
+            </Button>
+          </div>
+        </ModalActions>
+      </Modal>
 
       <Card className="p-6 lg:p-10 gap-6">
         <h1 className="heading-2 text-center">Gestión de plantillas</h1>
@@ -159,11 +199,15 @@ export const Plantillas = () => {
                 emptyMessage="No hay plantillas registradas."
               >
                 {plantillasVisibles.map((p) => (
-                  <div key={p.id} onClick={() => handlePreview(p.id)} className="cursor-pointer">
+                  <div 
+                    key={p.id} 
+                    onClick={() => handlePreview(p.id)} 
+                    className={`cursor-pointer rounded-md ${selectedId === p.id ? 'ring-2 ring-brand-primary' : ''}`}
+                  >
                     <ListElement
                       nombre={p.nombre}
                       fechaCreacion={formatFecha(p.created_at)}
-                      onDelete={() => handleEliminar(p.id)}
+                      onDelete={p.en_uso ? undefined : () => setPlantillaAEliminar(p)}
                     />
                   </div>
                 ))}
@@ -207,7 +251,6 @@ export const Plantillas = () => {
           </Card>
         </div>
       </Card>
-
     </div>
   );
 };
