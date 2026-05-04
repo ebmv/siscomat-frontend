@@ -21,10 +21,7 @@ export const Plantillas = () => {
   const [archivo, setArchivo] = useState<File | null>(null);
   const [fileUploaderKey, setFileUploaderKey] = useState(0);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  
-  // NUEVO: Guardamos el ID de la plantilla que se está previsualizando
   const [selectedId, setSelectedId] = useState<number | null>(null); 
-  
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
   const [plantillaAEliminar, setPlantillaAEliminar] = useState<Plantilla | null>(null);
@@ -93,7 +90,6 @@ export const Plantillas = () => {
   }
 
   async function handlePreview(id: number) {
-    // NUEVO: Si el ID al que le diste clic es el mismo que ya estás viendo, no hagas nada.
     if (id === selectedId) return;
 
     try {
@@ -103,7 +99,7 @@ export const Plantillas = () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       const url = URL.createObjectURL(res.data);
       setPreviewUrl(url);
-      setSelectedId(id); // Actualizamos el ID seleccionado
+      setSelectedId(id);
     } catch {
       setGeneralError("No se pudo cargar el preview.");
     }
@@ -114,7 +110,6 @@ export const Plantillas = () => {
     try {
       await api.delete(`/plantillas/${plantillaAEliminar.id}`);
       
-      // NUEVO: Si estamos eliminando la plantilla que tenemos en preview, la quitamos
       if (previewUrl && plantillaAEliminar.id === selectedId) {
         URL.revokeObjectURL(previewUrl);
         setPreviewUrl(null);
@@ -157,12 +152,12 @@ export const Plantillas = () => {
           <p className="label-small text-error-primary text-center mt-2">{eliminarError}</p>
         )}
         <ModalActions>
-          <div className="w-32">
+          <div className="w-40">
             <Button variant="secondary" onClick={() => { setPlantillaAEliminar(null); setEliminarError(""); }}>
               Cancelar
             </Button>
           </div>
-          <div className="w-32">
+          <div className="w-40">
             <Button variant="error" onClick={handleEliminarConfirmado}>
               Sí, eliminar
             </Button>
@@ -207,7 +202,6 @@ export const Plantillas = () => {
                   <div 
                     key={p.id} 
                     onClick={() => handlePreview(p.id)} 
-                    // Opcional: Puedes agregarle un estilo diferente al que está seleccionado
                     className={`cursor-pointer rounded-md ${selectedId === p.id ? 'ring-2 ring-brand-primary' : ''}`}
                   >
                     <ListElement
