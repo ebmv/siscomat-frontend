@@ -1,0 +1,20 @@
+services:
+  portal-publico:
+    build:
+      context: .
+      args:
+        PORTAL_DIR: apps/portal-publico
+    container_name: frontend-portal-publico
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+  panel-de-administracion:
+    build:
+      context: .
+      args:
+        PORTAL_DIR: apps/panel-de-administracion
+    container_name: frontend-panel-de-administracion
+    ports:
+      - "5174:80"
+    restart: unless-stopped
