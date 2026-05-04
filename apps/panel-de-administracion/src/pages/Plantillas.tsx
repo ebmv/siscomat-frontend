@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Card, Button } from "@siscomat/shared-ui";
+import { Card, Button, Toast } from "@siscomat/shared-ui";
 import { FileUploader, ListContainer, ListElement, Modal, ModalIcon, ModalTitle, ModalActions } from "../components";
 import { useAuth } from "../components";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,11 @@ interface Plantilla {
   nombre: string;
   created_at: string;
   en_uso: boolean;
+}
+
+interface ErrorValidacion {
+  encontrados: string[];
+  faltantes: string[];
 }
 
 const PLANTILLAS_POR_PAGINA = 3;
@@ -26,6 +31,8 @@ export const Plantillas = () => {
   const [generalError, setGeneralError] = useState("");
   const [plantillaAEliminar, setPlantillaAEliminar] = useState<Plantilla | null>(null);
   const [eliminarError, setEliminarError] = useState("");
+  const [errorValidacion, setErrorValidacion] = useState<ErrorValidacion | null>(null);
+  const [mensajeToast, setMensajeToast] = useState("");
 
   const fetchPlantillas = useCallback(async () => {
     try {
@@ -67,6 +74,8 @@ export const Plantillas = () => {
     if (hasError) return;
 
     setGeneralError("");
+    setErrorValidacion(null);
+    setMensajeToast("");
     setLoading(true);
 
     try {
@@ -82,8 +91,19 @@ export const Plantillas = () => {
       setFileUploaderKey((k) => k + 1);
       setVisibleCount(PLANTILLAS_POR_PAGINA);
       await fetchPlantillas();
-    } catch {
-      setGeneralError("Error al subir la plantilla.");
+      
+      setMensajeToast("Plantilla subida con éxito");
+
+    } catch (error: any) {
+      if (error.response?.status === 400 && error.response?.data?.detalles) {
+        const detalles = error.response.data.detalles;
+        setErrorValidacion({
+          encontrados: detalles.placeholders_encontrados,
+          faltantes: detalles.placeholders_faltantes
+        });
+      } else {
+        setGeneralError(error.response?.data?.error || "Error al subir la plantilla.");
+      }
     } finally {
       setLoading(false);
     }
@@ -137,7 +157,9 @@ export const Plantillas = () => {
   const hayMenos = visibleCount > PLANTILLAS_POR_PAGINA;
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-4 md:py-10 md:px-8 lg:px-16 flex flex-col gap-6">
+    <div className="relative w-full max-w-7xl mx-auto p-4 md:py-10 md:px-8 lg:px-16 flex flex-col gap-6">
+      
+      <Toast mensaje={mensajeToast} onClose={() => setMensajeToast("")} />
 
       <Modal
         isOpen={plantillaAEliminar !== null}
@@ -181,12 +203,38 @@ export const Plantillas = () => {
                 <FileUploader
                   key={fileUploaderKey}
                   accept="application/pdf"
-                  onFileSelect={setArchivo}
+                  onFileSelect={(file) => {
+                    setArchivo(file);
+                    setErrorValidacion(null);
+                    setMensajeToast("");
+                  }}
                 />
+                
                 {archivoError && (
-                  <p className="text-xs font-label text-error-primary">{archivoError}</p>
+                  <p className="label-small text-error-primary">{archivoError}</p>
+                )}
+
+                {errorValidacion && (
+                  <div className="mt-2 p-3 bg-error-primary/10 border border-error-primary/30 rounded-md text-xs text-error-primary">
+                    <p className="font-bold mb-2">El archivo seleccionado no superó la validación.</p>
+                    
+                    <p className="font-semibold mt-2">Marcadores requeridos faltantes:</p>
+                    <ul className="list-disc pl-4 mb-2">
+                      {errorValidacion.faltantes.map(p => <li key={`falta-${p}`}>{p}</li>)}
+                    </ul>
+
+                    <p className="font-semibold mt-2">Marcadores identificados en el documento:</p>
+                    <ul className="list-disc pl-4">
+                      {errorValidacion.encontrados.length > 0 ? (
+                        errorValidacion.encontrados.map(p => <li key={`enc-${p}`}>{p}</li>)
+                      ) : (
+                        <li>Ninguno</li>
+                      )}
+                    </ul>
+                  </div>
                 )}
               </div>
+              
               <Button onClick={handleSubir} disabled={loading}>
                 {loading ? "Subiendo..." : "Subir plantilla"}
               </Button>
