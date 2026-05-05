@@ -12,7 +12,7 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" replace />;
   }
 
-  if (requiresAdmin && user.esAdmin) {
+  if (requiresAdmin && !user.esAdmin) {
     return <Navigate to="/" replace />;
   }
 
