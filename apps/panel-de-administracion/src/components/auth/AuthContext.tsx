@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import axios, { type AxiosInstance } from "axios";
 
 interface User {
@@ -30,6 +36,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
+  useEffect(() => {
+    const responseInterceptor = api.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          setUser(null);
+          localStorage.removeItem("siscomat_user");
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      },
+    );
+
+    return () => {
+      api.interceptors.response.eject(responseInterceptor);
+    };
+  }, []);
+
   const login = async (correo: string, password: string) => {
     try {
       const response = await api.post("/auth/login", { correo, password });
@@ -47,9 +71,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = async () => {
-    await api.post("/auth/logout");
-    setUser(null);
-    localStorage.removeItem("siscomat_user");
+    try {
+      await api.post("/auth/logout");
+    } catch (error) {
+      console.error("Error al cerrar sesión");
+    } finally {
+      setUser(null);
+      localStorage.removeItem("siscomat_user");
+    }
   };
 
   return (
