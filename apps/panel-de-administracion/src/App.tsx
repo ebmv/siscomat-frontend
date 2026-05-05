@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Login, Home, Plantillas } from "./pages";
+import { Login, Home, Plantillas, Gestores } from "./pages";
 import {
   Navbar,
   AuthProvider,
@@ -25,8 +25,8 @@ function App() {
                 // TODO: agregar ruta para constancias
               </Route>
 
-              <Route element={<ProtectedRoute requiresAdmin={true} />}>
-                // TODO: agregar ruta para gestion de usuarios
+              <Route element={<ProtectedRoute requiresAdmin={false} />}>
+                <Route path="/gestores" element={<Gestores />} />
               </Route>
             </Routes>
           </main>
