@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Card, Button, Toast } from "@siscomat/shared-ui";
-import { FileUploader, ListContainer, ListElement, Modal, ModalIcon, ModalTitle, ModalActions } from "../components";
+import {
+  FileUploader,
+  ListContainer,
+  ListElement,
+  Modal,
+  ModalIcon,
+  ModalTitle,
+  ModalActions,
+} from "../components";
 import { useAuth } from "../components";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,12 +34,14 @@ export const Plantillas = () => {
   const [archivo, setArchivo] = useState<File | null>(null);
   const [fileUploaderKey, setFileUploaderKey] = useState(0);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<number | null>(null); 
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
-  const [plantillaAEliminar, setPlantillaAEliminar] = useState<Plantilla | null>(null);
+  const [plantillaAEliminar, setPlantillaAEliminar] =
+    useState<Plantilla | null>(null);
   const [eliminarError, setEliminarError] = useState("");
-  const [errorValidacion, setErrorValidacion] = useState<ErrorValidacion | null>(null);
+  const [errorValidacion, setErrorValidacion] =
+    useState<ErrorValidacion | null>(null);
   const [mensajeToast, setMensajeToast] = useState("");
 
   const fetchPlantillas = useCallback(async () => {
@@ -55,7 +65,9 @@ export const Plantillas = () => {
       setArchivoError("Selecciona un archivo PDF.");
       hasError = true;
     } else {
-      nombreSinExtension = archivo.name.substring(0, archivo.name.lastIndexOf('.')) || archivo.name;
+      nombreSinExtension =
+        archivo.name.substring(0, archivo.name.lastIndexOf(".")) ||
+        archivo.name;
 
       if (archivo.type !== "application/pdf") {
         setArchivoError("El archivo debe ser un PDF.");
@@ -64,7 +76,9 @@ export const Plantillas = () => {
         setArchivoError("El archivo no debe superar los 5 MB.");
         hasError = true;
       } else if (nombreSinExtension.length > 150) {
-        setArchivoError("El nombre del archivo no puede superar los 150 caracteres.");
+        setArchivoError(
+          "El nombre del archivo no puede superar los 150 caracteres.",
+        );
         hasError = true;
       } else {
         setArchivoError("");
@@ -91,18 +105,19 @@ export const Plantillas = () => {
       setFileUploaderKey((k) => k + 1);
       setVisibleCount(PLANTILLAS_POR_PAGINA);
       await fetchPlantillas();
-      
-      setMensajeToast("Plantilla subida con éxito");
 
+      setMensajeToast("Plantilla subida con éxito");
     } catch (error: any) {
       if (error.response?.status === 400 && error.response?.data?.detalles) {
         const detalles = error.response.data.detalles;
         setErrorValidacion({
           encontrados: detalles.placeholders_encontrados,
-          faltantes: detalles.placeholders_faltantes
+          faltantes: detalles.placeholders_faltantes,
         });
       } else {
-        setGeneralError(error.response?.data?.error || "Error al subir la plantilla.");
+        setGeneralError(
+          error.response?.data?.error || "Error al subir la plantilla.",
+        );
       }
     } finally {
       setLoading(false);
@@ -129,13 +144,13 @@ export const Plantillas = () => {
     if (!plantillaAEliminar) return;
     try {
       await api.delete(`/plantillas/${plantillaAEliminar.id}`);
-      
+
       if (previewUrl && plantillaAEliminar.id === selectedId) {
         URL.revokeObjectURL(previewUrl);
         setPreviewUrl(null);
         setSelectedId(null);
       }
-      
+
       setGeneralError("");
       setPlantillaAEliminar(null);
       setEliminarError("");
@@ -158,24 +173,35 @@ export const Plantillas = () => {
 
   return (
     <div className="relative w-full max-w-7xl mx-auto p-4 md:py-10 md:px-8 lg:px-16 flex flex-col gap-6">
-      
       <Toast mensaje={mensajeToast} onClose={() => setMensajeToast("")} />
 
       <Modal
         isOpen={plantillaAEliminar !== null}
-        onClose={() => { setPlantillaAEliminar(null); setEliminarError(""); }}
+        onClose={() => {
+          setPlantillaAEliminar(null);
+          setEliminarError("");
+        }}
       >
         <ModalIcon icon={faTriangleExclamation} variant="error" />
         <ModalTitle title="Eliminar plantilla" />
         <p className="label-normal text-dark-2 text-center">
-          ¿Está seguro de que desea eliminar la plantilla "{plantillaAEliminar?.nombre}"?
+          ¿Está seguro de que desea eliminar la plantilla "
+          {plantillaAEliminar?.nombre}"?
         </p>
         {eliminarError && (
-          <p className="label-small text-error-primary text-center mt-2">{eliminarError}</p>
+          <p className="label-small text-error-primary text-center mt-2">
+            {eliminarError}
+          </p>
         )}
         <ModalActions>
           <div className="w-40">
-            <Button variant="secondary" onClick={() => { setPlantillaAEliminar(null); setEliminarError(""); }}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setPlantillaAEliminar(null);
+                setEliminarError("");
+              }}
+            >
               Cancelar
             </Button>
           </div>
@@ -191,13 +217,14 @@ export const Plantillas = () => {
         <h1 className="heading-2 text-center">Gestión de plantillas</h1>
 
         {generalError && (
-          <p className="label-normal text-error-primary text-center">{generalError}</p>
+          <p className="label-normal text-error-primary text-center">
+            {generalError}
+          </p>
         )}
 
         <div className="flex flex-col lg:flex-row gap-6 w-full">
           <div className="flex flex-col gap-4 w-full lg:w-72 shrink-0">
-
-            <Card className="p-4 gap-3">
+            <Card variant="white" className="p-4 gap-3">
               <h2 className="heading-5">Cargar plantilla</h2>
               <div className="flex flex-col gap-1 w-full">
                 <FileUploader
@@ -209,24 +236,36 @@ export const Plantillas = () => {
                     setMensajeToast("");
                   }}
                 />
-                
+
                 {archivoError && (
-                  <p className="label-small text-error-primary">{archivoError}</p>
+                  <p className="label-small text-error-primary">
+                    {archivoError}
+                  </p>
                 )}
 
                 {errorValidacion && (
                   <div className="mt-2 p-3 bg-error-primary/10 border border-error-primary/30 rounded-md text-xs text-error-primary">
-                    <p className="font-bold mb-2">El archivo seleccionado no superó la validación.</p>
-                    
-                    <p className="font-semibold mt-2">Marcadores requeridos faltantes:</p>
+                    <p className="font-bold mb-2">
+                      El archivo seleccionado no superó la validación.
+                    </p>
+
+                    <p className="font-semibold mt-2">
+                      Marcadores requeridos faltantes:
+                    </p>
                     <ul className="list-disc pl-4 mb-2">
-                      {errorValidacion.faltantes.map(p => <li key={`falta-${p}`}>{p}</li>)}
+                      {errorValidacion.faltantes.map((p) => (
+                        <li key={`falta-${p}`}>{p}</li>
+                      ))}
                     </ul>
 
-                    <p className="font-semibold mt-2">Marcadores identificados en el documento:</p>
+                    <p className="font-semibold mt-2">
+                      Marcadores identificados en el documento:
+                    </p>
                     <ul className="list-disc pl-4">
                       {errorValidacion.encontrados.length > 0 ? (
-                        errorValidacion.encontrados.map(p => <li key={`enc-${p}`}>{p}</li>)
+                        errorValidacion.encontrados.map((p) => (
+                          <li key={`enc-${p}`}>{p}</li>
+                        ))
                       ) : (
                         <li>Ninguno</li>
                       )}
@@ -234,28 +273,30 @@ export const Plantillas = () => {
                   </div>
                 )}
               </div>
-              
+
               <Button onClick={handleSubir} disabled={loading}>
                 {loading ? "Subiendo..." : "Subir plantilla"}
               </Button>
             </Card>
 
-            <Card className="p-4 gap-3">
+            <Card variant="white" className="p-4 gap-3">
               <h2 className="heading-5">Plantillas</h2>
               <ListContainer
                 isEmpty={plantillasVisibles.length === 0}
                 emptyMessage="No hay plantillas registradas."
               >
                 {plantillasVisibles.map((p) => (
-                  <div 
-                    key={p.id} 
-                    onClick={() => handlePreview(p.id)} 
-                    className={`cursor-pointer rounded-md ${selectedId === p.id ? 'ring-2 ring-brand-primary' : ''}`}
+                  <div
+                    key={p.id}
+                    onClick={() => handlePreview(p.id)}
+                    className={`cursor-pointer rounded-md ${selectedId === p.id ? "ring-2 ring-brand-primary" : ""}`}
                   >
                     <ListElement
                       nombre={p.nombre}
                       fechaCreacion={formatFecha(p.created_at)}
-                      onDelete={p.en_uso ? undefined : () => setPlantillaAEliminar(p)}
+                      onDelete={
+                        p.en_uso ? undefined : () => setPlantillaAEliminar(p)
+                      }
                     />
                   </div>
                 ))}
@@ -272,7 +313,9 @@ export const Plantillas = () => {
                 )}
                 {hayMas && (
                   <button
-                    onClick={() => setVisibleCount((c) => c + PLANTILLAS_POR_PAGINA)}
+                    onClick={() =>
+                      setVisibleCount((c) => c + PLANTILLAS_POR_PAGINA)
+                    }
                     className="label-small text-brand-primary hover:text-brand-lighter transition-colors cursor-pointer"
                   >
                     Ver más
@@ -282,7 +325,7 @@ export const Plantillas = () => {
             </Card>
           </div>
 
-          <Card className="flex-1 overflow-hidden min-h-96 p-4">
+          <Card variant="white" className="flex-1 overflow-hidden min-h-96 p-4">
             {previewUrl ? (
               <iframe
                 src={previewUrl + "#toolbar=0"}
