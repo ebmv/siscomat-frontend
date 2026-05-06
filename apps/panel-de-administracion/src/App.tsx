@@ -6,6 +6,7 @@ import {
   ProtectedRoute,
   PublicRoute,
 } from "./components";
+import { Constancias } from "./pages/Constancias";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/plantillas" element={<Plantillas />} />
-                // TODO: agregar ruta para constancias
+                <Route path="/constancias" element={<Constancias />} />
               </Route>
 
               <Route element={<ProtectedRoute requiresAdmin={false} />}>
