@@ -1,5 +1,4 @@
 name: Generar y Publicar Documentacion
-
 on:
   push:
     branches:
@@ -10,11 +9,6 @@ on:
 jobs:
   build-and-deploy-docs:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./apps/panel-de-administracion
-
     steps:
       - name: Download code
         uses: actions/checkout@v4
@@ -28,7 +22,8 @@ jobs:
         run: npm install
 
       - name: Generate TypeDoc
-        run: npx typedoc --entryPointStrategy expand ./src 
+        working-directory: ./apps/panel-de-administracion
+        run: npx typedoc --entryPointStrategy expand ./src
 
       - name: Publish to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
