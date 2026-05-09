@@ -6,6 +6,23 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./auth";
 
+/**
+ * Barra de navegación principal de la aplicación.
+ *
+ *
+ * - **Responsividad:** Muestra un menú de "hamburguesa" desplegable en dispositivos móviles y una fila de botones en pantallas medianas o grandes.
+ * - **Seguridad:** El componente devuelve `null` (no se renderiza) si no hay una sesión activa.
+ * - **Permisos:** La pestaña de "Gestores" se renderiza condicionalmente solo si el usuario actual cuenta con la bandera `esAdmin`.
+ *
+ * @example
+ * // Se coloca usualmente en el archivo principal de rutas o en un Layout global:
+ * <div className="app-container">
+ *   <Navbar />
+ *   <main>
+ *     <Outlet />
+ *   </main>
+ * </div>
+ */
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();

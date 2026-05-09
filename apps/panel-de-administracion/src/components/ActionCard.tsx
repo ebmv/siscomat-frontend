@@ -2,12 +2,41 @@ import { Card } from "@siscomat/shared-ui";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-interface ActionCardProps {
+/**
+ * Propiedades del componente ActionCard.
+ */
+export interface ActionCardProps {
+  /**
+   * Texto principal que describe la acción, se muestra centrado debajo del ícono.
+   */
   title: string;
+  /**
+   * Ícono importado de FontAwesome que representa visualmente la acción.
+   */
   icon: IconDefinition;
+  /**
+   * Función que se dispara al hacer clic en cualquier parte de la tarjeta.
+   */
   onClick: () => void;
 }
 
+/**
+ * Tarjeta interactiva diseñada para usarse como un botón de acción grande.
+ *
+ * Incluye un efecto visual de escala al hacer hover.
+ * Se adapta a diferentes tamaños de pantalla, mostrando el ícono y el título centrados tanto vertical como horizontalmente.
+ *
+ * @example
+ * import { faUser } from "@fortawesome/free-solid-svg-icons";
+ *
+ * <ActionCard
+ *   title="Gestionar Usuarios"
+ *   icon={faUser}
+ *   onClick={() => navigate("/usuarios")}
+ * />
+ *
+ * En este ejemplo, se muestra una tarjeta con el ícono de usuario y el título "Gestionar Usuarios". Al hacer clic en la tarjeta, se navega a la ruta "/usuarios".
+ */
 export const ActionCard = ({ title, icon, onClick }: ActionCardProps) => {
   return (
     <div

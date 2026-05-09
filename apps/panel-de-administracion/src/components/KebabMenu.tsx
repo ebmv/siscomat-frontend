@@ -2,12 +2,47 @@ import { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-interface KebabMenuProps {
+/**
+ * Propiedades del componente KebabMenu.
+ */
+export interface KebabMenuProps {
+  /**
+   * Función que se dispara al confirmar la eliminación.
+   * Si no se proporciona esta función, el botón de eliminar aparecerá deshabilitado.
+   */
   onDelete?: () => void;
+  /**
+   * Mensaje de ayuda que explica por qué no se puede eliminar el elemento.
+   * Solo se muestra si onDelete no está definido.
+   * @example "No se puede eliminar al administrador principal."
+   */
   deleteDisabledReason?: string;
 }
 
-export const KebabMenu = ({ onDelete, deleteDisabledReason }: KebabMenuProps) => {
+/**
+ * Menú contextual desplegable representado por tres puntos verticales (Kebab).
+ *
+ *  Cuenta con un `useEffect` interno que escucha los clics en el documento
+ * para cerrarse automáticamente si el usuario hace clic fuera del menú.
+ * Ideal para tarjetas o filas en tablas de datos.
+ *
+ * @example
+ * // Menú habilitado:
+ * <KebabMenu
+ *   onDelete={() => console.log("Elemento eliminado")}
+ * />
+ *
+ * // Menú deshabilitado con mensaje de ayuda:
+ * <KebabMenu
+ *   deleteDisabledReason="No se puede eliminar al administrador principal."
+ * />
+ *
+ * En el primer ejemplo, el menú muestra un botón de eliminar activo que, al hacer clic, registra "Elemento eliminado" en la consola. En el segundo ejemplo, el botón de eliminar aparece deshabilitado y muestra un mensaje explicativo debajo del botón.
+ */
+export const KebabMenu = ({
+  onDelete,
+  deleteDisabledReason,
+}: KebabMenuProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +93,9 @@ export const KebabMenu = ({ onDelete, deleteDisabledReason }: KebabMenuProps) =>
               <span className="label-normal text-dark-1">Eliminar</span>
             </div>
             {disabled && deleteDisabledReason && (
-              <p className="label-small text-dark-3 mt-1 ml-6">{deleteDisabledReason}</p>
+              <p className="label-small text-dark-3 mt-1 ml-6">
+                {deleteDisabledReason}
+              </p>
             )}
           </button>
         </div>
