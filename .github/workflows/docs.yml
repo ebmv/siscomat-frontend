@@ -1,0 +1,38 @@
+name: Generar y Publicar Documentacion
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/panel-de-administracion/**'
+
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./apps/panel-de-administracion
+
+    steps:
+      - name: Download code
+        uses: actions/checkout@v4
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate TypeDoc
+        run: npx typedoc --entryPointStrategy expand ./src 
+
+      - name: Publish to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/panel-de-administracion/docs
+          destination_dir: panel-admin-docs
