@@ -3,13 +3,45 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
-interface ModalProps {
+/**
+ * Propiedades para el componente Modal.
+ */
+export interface ModalProps {
+  /**
+   * Determina si el modal está visible en pantalla.
+   */
   isOpen: boolean;
+  /**
+   * Función para cerrar el modal. Se dispara al hacer clic fuera del modal o presionar la tecla Escape.
+   */
   onClose: () => void;
+  /**
+   * Contenido interno del modal. Se recomienda usar ModalIcon, ModalTitle y ModalActions.
+   */
   children: ReactNode;
+  /**
+   * Define el ancho máximo del contenedor.
+   * @default "md"
+   */
   maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 }
 
+/**
+ * Contenedor principal para modales.
+ *
+ * Bloquea la interacción con el fondo y cuenta con atajos de teclado nativos.
+ *
+ * @example
+ * <Modal isOpen={true} onClose={() => setOpen(false)} maxWidth="sm">
+ *   <ModalIcon icon={faWarning} variant="warning" />
+ *   <ModalTitle title="¿Desea continuar?" />
+ *   <p className="text-dark-2 my-4">Esta acción no se puede deshacer.</p>
+ *   <ModalActions>
+ *     <Button onClick={cancelar}>Cancelar</Button>
+ *     <Button variant="primary" onClick={confirmar}>Aceptar</Button>
+ *   </ModalActions>
+ * </Modal>
+ */
 export const Modal = ({
   isOpen,
   onClose,
@@ -32,7 +64,7 @@ export const Modal = ({
     lg: "max-w-lg",
     xl: "max-w-xl",
     "2xl": "max-w-2xl",
-    "3xl": "max-2-3xl",
+    "3xl": "max-w-3xl",
   };
 
   return (
@@ -51,10 +83,18 @@ export const Modal = ({
   );
 };
 
-interface ModalIconProps {
+/**
+ * Propiedades para el ícono decorativo del modal.
+ */
+export interface ModalIconProps {
   icon: IconDefinition;
+  /** Define la paleta de colores del círculo de fondo y el ícono */
   variant: "success" | "info" | "warning" | "error";
 }
+
+/**
+ * Subcomponente de Modal para mostrar un ícono decorativo que refuerce el mensaje del modal.
+ */
 export const ModalIcon = ({ icon, variant }: ModalIconProps) => {
   const variants = {
     success: "bg-success-subtle text-success-primary",
@@ -71,6 +111,9 @@ export const ModalIcon = ({ icon, variant }: ModalIconProps) => {
   );
 };
 
+/**
+ * Subcomponente de Modal para mostrar un título.
+ */
 export const ModalTitle = ({ title }: { title: string }) => {
   return (
     <div className="flex items-center p-4">
@@ -79,6 +122,9 @@ export const ModalTitle = ({ title }: { title: string }) => {
   );
 };
 
+/**
+ * Subcomponente de Modal para mostrar botones de acción.
+ */
 export const ModalActions = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex items-center justify-center gap-3 pt-4 px-4">

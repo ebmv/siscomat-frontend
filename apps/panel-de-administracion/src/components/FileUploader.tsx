@@ -10,11 +10,35 @@ import {
 import { Button } from "@siscomat/shared-ui";
 import { IconButton } from "./IconButton";
 
-interface FileUploaderProps {
+/**
+ * Propiedades para el componente FileUploader.
+ */
+export interface FileUploaderProps {
+  /**
+   * Función que se ejecuta cuando el estado del archivo cambia.
+   * @returns objeto File seleccionado o null si se elimina el archivo.
+   */
   onFileSelect?: (file: File | null) => void;
+  /**
+   * Tipos de archivos permitidos para subir. Se pasa directamente al atributo "accept" del input de tipo file.
+   * Ejemplo: "image/*" para permitir solo imágenes, ".pdf" para permitir solo archivos PDF, etc.
+   */
   accept?: string;
 }
 
+/**
+ * Zona interactiva para subir archivos. Soporta arrastrar y soltar archivos o seleccionar a través del explorador de archivos.
+ *
+ *  Muestra visualmente el estado del arrastre y una vez seleccionado el archivo renderiza una tarjeta con el nombre, tamaño y un botón para eliminarlo
+ *
+ * @example
+ * <FileUploader
+ *   accept=".pdf"
+ *   onFileSelect={(file) => console.log("Archivo listo para subir:", file)}
+ * />
+ *
+ * En este ejemplo, el componente FileUploader permite subir solo archivos PDF.
+ */
 export const FileUploader = ({ onFileSelect, accept }: FileUploaderProps) => {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
