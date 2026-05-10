@@ -116,9 +116,9 @@ export const Constancias = () => {
 
       // Validación de codificación (Detección de caracter de reemplazo Unicode)
       // Bloquea archivos ANSI que fallaron en parsear caracteres especiales.
-      if (text.includes("")) {
+      if (text.includes("\uFFFD")) {
         setErrorCSV(
-          "Codificación inválida detectada. El archivo contiene caracteres no reconocidos. Por favor, exporte o guarde su documento utilizando explícitamente la codificación 'UTF-8' en su procesador de hojas de cálculo.",
+          "Codificación inválida detectada. El archivo contiene caracteres no reconocidos. Debe guardar el documento en formato UTF-8 para que sea compatible.",
         );
         setParticipantes([]);
         setArchivoSubido(null);
