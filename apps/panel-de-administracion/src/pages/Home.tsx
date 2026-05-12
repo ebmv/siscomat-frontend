@@ -1,3 +1,4 @@
+import { useEffect } from "react";  // agregar
 import { Card } from "@siscomat/shared-ui";
 import { ActionCard } from "../components/ActionCard";
 import { faAward, faPalette, faUsers } from "@fortawesome/free-solid-svg-icons";
@@ -7,6 +8,10 @@ import { useAuth } from "../components";
 export const Home = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Inicio | Administración de SISCOMAT";
+  }, []);
 
   const getGreeting = () => {
     const time = new Date().getHours();

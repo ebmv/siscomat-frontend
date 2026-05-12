@@ -57,6 +57,10 @@ export const Plantillas = () => {
     fetchPlantillas();
   }, [fetchPlantillas]);
 
+  useEffect(() => {
+    document.title = "Plantillas | Administración de SISCOMAT";
+  }, []);
+
   async function handleSubir() {
     let hasError = false;
     let nombreSinExtension = "";
