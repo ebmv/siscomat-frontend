@@ -45,6 +45,10 @@ export const Constancias = () => {
   const [participantes, setParticipantes] = useState<ParticipanteCSV[]>([]);
   const [archivoSubido, setArchivoSubido] = useState<File | null>(null);
 
+  useEffect(() => {
+    document.title = "Constancias | Administración de SISCOMAT";
+  }, []);
+
   // Estados de selección y UI
   const [fileUploaderKey, setFileUploaderKey] = useState(0);
   const [selectedPlantillaId, setSelectedPlantillaId] = useState<number | null>(

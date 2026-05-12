@@ -57,6 +57,10 @@ export const Gestores = () => {
     fetchGestores();
   }, [fetchGestores]);
 
+  useEffect(() => {
+    document.title = "Gestores | Administración de SISCOMAT";
+  }, []);
+
   const showToast = (
     mensaje: string,
     variant: "success" | "error" = "success",
