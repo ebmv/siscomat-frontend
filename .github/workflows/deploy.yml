@@ -4,10 +4,40 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
+  test:
+    name: Test (${{matrix.app}})
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        app: [panel-de-administracion, portal-publico]
+
+    steps:
+      - name: Download code
+        uses: actions/checkout@v4
+      
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run Vitest tests
+        run: |
+          cd apps/${{matrix.app}}
+          npm run test:run
+
   deploy:
     name: Deploy
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
