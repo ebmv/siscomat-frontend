@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes, forwardRef } from 'react';
+import { type InputHTMLAttributes, forwardRef } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -14,22 +14,24 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled
         ? "bg-light-2 border-light-1 text-dark-3 cursor-not-allowed"
         : error
-        ? "border-error-primary focus:border-error-primary focus:ring-2 focus:ring-error-subtle"
-        : "border-light-1 focus:border-brand-primary focus:ring-2 focus:ring-brand-subtle",
+          ? "border-error-primary focus:border-error-primary focus:ring-2 focus:ring-error-subtle"
+          : "border-light-1 focus:border-brand-primary focus:ring-2 focus:ring-brand-subtle",
       className,
     ]
       .filter(Boolean)
       .join(" ");
+    const inputId = `input-${label!.replace(/\s+/g, "-").toLowerCase()}`;
 
     return (
       <div className="flex flex-col gap-1.5 w-full">
         {label && (
-          <label className="body-large text-dark-3">
+          <label htmlFor={inputId} className="body-large text-dark-3">
             {label}
           </label>
         )}
 
         <input
+          id={inputId}
           ref={ref}
           disabled={disabled}
           className={baseInput}
@@ -45,7 +47,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";
