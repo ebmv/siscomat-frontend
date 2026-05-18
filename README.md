@@ -113,7 +113,7 @@ npm run test
 **Portal público:**
 ```bash
 cd apps/portal-publico
-npm run test:run
+npm run test
 ```
 
 > Las pruebas también se ejecutan automáticamente en cada push o pull request a `main`.
