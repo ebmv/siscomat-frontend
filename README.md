@@ -107,7 +107,7 @@ El proyecto cuenta con pruebas en Vitest para ambas aplicaciones. Ejecutarlas de
 **Panel de administración:**
 ```bash
 cd apps/panel-de-administracion
-npm run test:run
+npm run test
 ```
 
 **Portal público:**
